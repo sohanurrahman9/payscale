@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="theme-color" content="#12284c">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>9th Pay Scale Calculator</title>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#eef1f6;--sf:#fff;--ink:#14202f;--mu:#5a6a80;--ln:#dbe2ee;--gr:#1b4a9c;--gl:#e6edf9;--rd:#c0392b;--hd:#12284c;--hd2:#1c3d73;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0c121c;--sf:#151d2b;--ink:#e8eef7;--mu:#9aabc4;--ln:#25324a;--gr:#8fb4ff;--gl:#1b2a45;--rd:#ef7a6c;--hd:#0e1a30;--hd2:#15284a;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0c121c;--sf:#151d2b;--ink:#e8eef7;--mu:#9aabc4;--ln:#25324a;--gr:#8fb4ff;--gl:#1b2a45;--rd:#ef7a6c;--hd:#0e1a30;--hd2:#15284a;color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Hind Siliguri",system-ui,sans-serif;line-height:1.5;font-variant-numeric:tabular-nums;padding-bottom:env(safe-area-inset-bottom,0px)}
+.hero{background:linear-gradient(160deg,var(--hd),var(--hd2));color:#fff;padding:calc(env(safe-area-inset-top,0px) + 22px) 16px 26px;border-bottom:3px solid #e0a030}
+.hero .in{max-width:720px;margin:0 auto}
+h1{font-size:1.7rem;margin:0;font-weight:700;letter-spacing:-.01em;line-height:1.2}
+.sub{margin:4px 0 16px;color:rgba(255,255,255,.78);font-size:.95rem}
+main{max-width:720px;margin:0 auto;padding:20px 16px 40px}
+h2{font-size:1.05rem;margin:0 0 12px;font-weight:700}
+h2.sh{margin:4px 2px 12px}
+.panel{background:var(--sf);border:1px solid var(--ln);border-radius:12px;padding:18px;margin-bottom:20px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px 12px}
+.full{grid-column:1/-1}
+@media(max-width:420px){.grid{grid-template-columns:1fr}}
+label{display:block;font-size:.84rem;font-weight:500;color:var(--mu);margin-bottom:4px}
+input,select{width:100%;min-height:44px;font:inherit;font-size:1rem;padding:9px 12px;border:1px solid var(--ln);border-radius:8px;background:var(--sf);color:var(--ink)}
+input:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid var(--gr);outline-offset:2px}
+.chk label{display:flex;gap:10px;align-items:center;color:var(--ink);font-size:.95rem;font-weight:400;margin:0;min-height:36px}
+.chk input{width:18px;min-height:0;height:18px;accent-color:var(--gr)}
+.fix{margin-top:14px;background:var(--bg);border-radius:8px;padding:8px 14px}
+.note{font-size:.8rem;color:var(--mu);margin:12px 0 0}
+.err{color:var(--rd);font-size:.88rem;min-height:1.2em;margin-top:6px}
+ol{list-style:none;margin:0 0 20px;padding:0;display:grid;gap:12px}
+li{position:relative;background:var(--sf);border:1px solid var(--ln);border-radius:12px;padding:16px 16px 16px 66px}
+li::before{content:attr(data-n);position:absolute;left:16px;top:16px;width:34px;height:34px;border-radius:50%;background:var(--hd);color:#fff;font-weight:700;display:grid;place-items:center}
+.per{font-weight:700}
+.share{color:var(--mu);font-size:.85rem}
+.amt{font-size:1.8rem;font-weight:700;line-height:1.2;margin:6px 0 4px;color:var(--gr)}
+.chg{display:inline-block;font-size:.82rem;color:var(--gr);background:var(--gl);padding:2px 10px;border-radius:999px;font-weight:500}
+.brk{font-size:.9rem;margin-top:8px;font-weight:600}
+.calc{margin-top:12px;background:var(--bg);border-radius:8px;padding:10px 14px}
+.ch{font-size:.88rem;color:var(--gr);font-weight:700;margin-bottom:4px}
+.wk{font-size:.84rem;color:var(--mu);padding:5px 0;border-bottom:1px dotted var(--ln)}
+.wk:last-child{border:0}
+.wk b{color:var(--ink);font-weight:600}
+.fix .wk{font-size:.88rem}
+.sm{padding:10px 0;border-bottom:1px solid var(--ln)}
+.sm:last-child{border:0}
+.smh{font-weight:700}
+.own{display:flex;gap:14px;align-items:center;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:12px;padding:14px}
+.av{flex:none;width:52px;height:52px;border-radius:50%;background:#fff;color:var(--hd);display:grid;place-items:center;font-weight:700;font-size:1.1rem}
+.own .nm{font-size:1.1rem;font-weight:700;line-height:1.3}
+.own .rl{color:rgba(255,255,255,.82);font-size:.86rem;line-height:1.4}
+.ct{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.ct a,.ct span{display:inline-flex;align-items:center;gap:6px;font-size:.82rem;padding:4px 11px;border-radius:999px;background:rgba(255,255,255,.14);color:#fff;text-decoration:none;border:1px solid rgba(255,255,255,.22)}
+.ct a:hover{background:rgba(255,255,255,.26)}
+.ct svg{flex:none}
+.ml{display:flex;justify-content:space-between;gap:12px;padding:5px 0;font-size:.9rem;border-bottom:1px dotted var(--ln)}.ml.sub{font-weight:600;border-bottom:1px solid var(--ln)}.ml.net{font-weight:700;color:var(--gr);font-size:1rem;border-bottom:0;padding-top:8px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 14px}
+.cp{display:inline-flex;flex-direction:column;align-items:center;font-size:.8rem;padding:3px 9px;border:1px solid var(--ln);border-radius:8px;background:var(--bg)}
+.cp.on{border-color:var(--gr);background:var(--gl);color:var(--gr);font-weight:600}
+.cp i{font-style:normal;font-size:.68rem;color:var(--mu);font-weight:400}
+</style>
+</head>
+<body>
+<div class="hero"><div class="in"><h1>9th Pay Scale Calculator</h1><p class="sub">Bangladesh National Pay Scale 2026: basic pay, allowances and deductions, step by step.</p><header class="own"><div class="av" aria-hidden="true">SR</div><div><div class="nm">Md. Sohanur Rahman</div><div class="rl">Lecturer, Information and Communication Technology</div><div class="rl">Lokerpara O. S Fazil Madrasah</div><div class="ct"><a href="tel:01521211311" aria-label="Call 01521211311"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>01521211311</a><a href="tel:01621211311" aria-label="Call 01621211311"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>01621211311</a><span aria-label="WhatsApp imsohan"><svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>imsohan</span></div></div></header></div></div>
+<main>
+<section class="panel" aria-label="Inputs">
+<h2>Your details</h2>
+<div class="grid">
+<div class="full"><label for="g">Grade</label><select id="g"></select></div>
+<div><label for="k">Increments earned in the 2015 scale</label><select id="k"></select></div>
+<div><label for="o">Or exact basic on 30 Jun 2026 (Tk)</label><input id="o" type="number" min="0" placeholder="from your payslip" inputmode="numeric"></div>
+<div class="full chk"><label><input id="i6" type="checkbox" checked> Eligible for the 1 July 2026 increment</label></div>
+<div class="full chk"><label><input id="i7" type="checkbox" checked> Add the 1 July 2027 increment in step 3</label></div>
+<div class="full chk"><label><input id="mp" type="checkbox"> MPO teacher: add MPO allowances and deductions</label></div>
+<div class="full" id="mpo" hidden>
+<div class="grid">
+<div><label for="mh">House rent now (% of basic)</label><input id="mh" type="number" min="0" value="15"></div>
+<div><label for="mn">Minimum house rent (Tk)</label><input id="mn" type="number" min="0" value="2000"></div>
+<div><label for="mm">Medical (Tk a month)</label><input id="mm" type="number" min="0" value="500"></div>
+<div><label for="me">Education allowance (Tk a month)</label><input id="me" type="number" min="0" value="0"></div>
+<div><label for="mx">Mobile / other fixed (Tk a month)</label><input id="mx" type="number" min="0" value="0"></div>
+<div><label for="mb">Baishakhi allowance (% of basic, yearly)</label><input id="mb" type="number" min="0" value="0"></div>
+<div><label for="mf">Festival bonus (% of basic, each Eid)</label><input id="mf" type="number" min="0" value="50"></div>
+<div><label for="mr">Retirement deduction (%)</label><input id="mr" type="number" min="0" value="6"></div>
+<div><label for="mw">Welfare deduction (%)</label><input id="mw" type="number" min="0" value="4"></div>
+<div><label for="mt">Income tax (Tk a month)</label><input id="mt" type="number" min="0" value="0"></div>
+<div><label for="mo">Other deductions (Tk a month)</label><input id="mo" type="number" min="0" value="0"></div>
+</div>
+<p class="note">These are the latest MPO rates I found: house rent 15% with a Tk 2,000 minimum, medical Tk 500, festival bonus 50% per Eid, retirement 6% and welfare 4%. The gazette does not yet say how MPO pay is aligned, and revised MPO allowances from Jan 2028 are not announced. Education, mobile/other and Baishakhi start at zero because I could not confirm MPO rates for them. Edit any figure to match your payslip.</p>
+</div>
+<div><label for="m">Months paid at old basic</label><input id="m" type="number" min="0" max="12" value="3" inputmode="numeric"></div>
+<div><label for="hr">House rent from Jan 2028 (% of basic)</label><input id="hr" type="number" min="0" max="100" placeholder="e.g. 45" inputmode="decimal"></div>
+<div class="full"><label for="md">Medical + other fixed from Jan 2028 (Tk)</label><input id="md" type="number" min="0" placeholder="e.g. 6000" inputmode="numeric"></div>
+</div>
+<div class="fix" id="fix"></div>
+<p class="note">Fixation follows the reported rule: new scale start plus your surplus over the old start, rounded up to the next step. Each increment is 5% of the current basic, rounded up to Tk 10 (Grade 9 starts 44,000, 46,200, 48,510), and the top step is capped at the scale maximum. Check your result against iBAS++.</p>
+<div class="err" id="err" role="alert"></div>
+</section>
+
+<section class="panel" aria-label="Scale ladders"><h2>How the scales are built</h2><div id="lad"></div></section>
+<h2 class="sh">Your pay in four steps</h2>
+<ol id="steps"></ol>
+
+<section class="panel" aria-label="Summary and arrears"><h2>Arrears and yearly totals</h2><div class="sum" id="sum"></div></section>
+<p class="note">An estimate for planning. Your payslip and the gazette decide the final figures. House rent and medical rates under the new scale vary by grade and city, so enter the rates that apply to you.</p>
+</main>
+<script>
+(function(){
+var OLD=[[78000,78000],[66000,76870],[56500,74800],[50000,71200],[43000,69850],[35500,67010],[29000,63410],[23000,55470],[22000,53060],[16000,38640],[12500,30230],[11300,27300],[11000,26590],[10200,24680],[9700,23490],[9300,22490],[9000,21800],[8800,21330],[8500,20570],[8250,20010]];
+var NEW=[[156000,156000],[132000,153000],[113000,148800],[100000,142400],[86000,139700],[71000,134000],[58000,126800],[46000,110800],[44000,105900],[32000,77300],[25000,60500],[24300,58700],[24000,58000],[23500,56800],[22800,55200],[21900,52900],[21400,51900],[21000,50900],[20500,49600],[20000,48400]];
+var $=function(i){return document.getElementById(i)};
+var g=$('g'),k=$('k');
+for(var i=1;i<=20;i++){var op=document.createElement('option');op.value=i;op.textContent='Grade '+i;g.appendChild(op)}
+g.value=9;
+function steps(a){var r=[a[0]];while(r[r.length-1]<a[1]){r.push(Math.min(a[1],Math.ceil(r[r.length-1]*1.05/10)*10))}return r}
+function f(x){return 'Tk '+Math.round(x).toLocaleString('en-IN')}
+function v(id){var x=parseFloat($(id).value);return isNaN(x)?0:x}
+function fillK(){
+ var S=steps(OLD[+g.value-1]),h='';
+ for(var j=0;j<S.length;j++)h+='<option value="'+j+'">'+j+' ('+f(S[j])+')</option>';
+ k.innerHTML=h;k.disabled=S.length===1;
+}
+function calc(){
+ var gr=+g.value,G=gr-1,od=OLD[G],nw=NEW[G],oS=steps(od),nS=steps(nw),last=nS.length-1;
+ var m=Math.min(12,Math.max(0,Math.floor(v('m')))),hr=v('hr'),md=v('md');
+ var ex=v('o'),o=ex>0?ex:oS[Math.min(+k.value||0,oS.length-1)];
+ var up=gr<=9,p1=up?.4:.5,p2=up?.7:.75;
+ var sur=Math.max(0,o-od[0]),tg=nw[0]+sur,ix=0;
+ while(ix<last&&nS[ix]<tg)ix++;
+ var fixed=nS[ix];
+ var i6=gr!==1&&$('i6').checked,i7=gr!==1&&$('i7').checked;
+ var ir=Math.min(last,ix+(i6?1:0)),R=nS[ir],full=nS[Math.min(last,ir+(i7?1:0))];
+ $('err').textContent='';
+ if(ex>0&&(ex<od[0]||ex>od[1]))$('err').textContent='That basic is outside the 2015 scale for Grade '+gr+' ('+f(od[0])+' to '+f(od[1])+').';
+ var d=R-o,s1=o+d*p1,s2=o+d*p2,al=full*hr/100+md,s4=full+al;
+ var rw=function(a,b){return '<div class="row"><span>'+a+'</span><b>'+b+'</b></div>'};
+ var wl=function(a){return a.map(function(l){return '<div class="wk">'+l+'</div>'}).join('')};
+ var bump=function(a){var r=a*1.05,c=Math.ceil(r/10)*10;return f(a)+' × 1.05 = '+f(r)+', rounded up to Tk 10 = '+f(c)+(c>nw[1]?', capped at the scale maximum '+f(nw[1]):'')};
+ var fx=[
+  '<b>Basic on 30 Jun 2026</b> = '+f(o)+(ex>0?' (entered)':' (increment '+(+k.value||0)+' of the 2015 scale)'),
+  '<b>Surplus</b> = '+f(o)+' − '+f(od[0])+' (2015 start) = '+f(sur),
+  '<b>Target</b> = '+f(nw[0])+' (2026 start) + '+f(sur)+' = '+f(tg),
+  '<b>Fixed basic</b> = first 2026 step at or above '+f(tg)+' = '+f(fixed)
+ ];
+ if(gr===1)fx.push('Grade 1 is a fixed salary, so there are no increments.');
+ else fx.push('<b>1 Jul 2026 increment</b>: '+(i6?bump(fixed)+' → revised basic '+f(R):'not selected, revised basic stays '+f(R)));
+ $('fix').innerHTML='<div class="ch">Pay fixation calculation</div>'+wl(fx);
+ var ifull=Math.min(last,ir+(i7?1:0)),oi=ex>0?(function(){var q=0;while(q<oS.length-1&&oS[q]<ex)q++;return q})():Math.min(+k.value||0,oS.length-1);
+ var mo={},mk={},add=function(i,t){mk[i]=(mk[i]?mk[i]+', ':'')+t};
+ mo[oi]='yours';add(ix,'fixed');if(i6)add(ir,'2026 increment');if(i7)add(ifull,'2027 increment');
+ var cps=function(a,end,mm){return '<div class="chips">'+a.slice(0,end+1).map(function(x,j){return '<span class="cp'+(mm[j]?' on':'')+'">'+Math.round(x).toLocaleString('en-IN')+(mm[j]?'<i>'+mm[j]+'</i>':'')+'</span>'}).join('')+'</div>'};
+ $('lad').innerHTML='<div class="wk"><b>2015 scale, Grade '+gr+'</b>: starts at '+f(od[0])+'. Each step is the previous one × 1.05, rounded up to Tk 10. Top step: '+f(od[1])+'.</div>'
+  +(oS.length>1?'<div class="wk">First step: '+f(oS[0])+' × 1.05 = '+f(oS[0]*1.05)+' → '+f(oS[1])+'</div>':'')
+  +cps(oS,oi,mo)
+  +'<div class="wk"><b>2026 scale, Grade '+gr+'</b>: starts at '+f(nw[0])+'. Same 5% rule. Top step: '+f(nw[1])+'.</div>'
+  +(nS.length>1?'<div class="wk">First step: '+f(nS[0])+' × 1.05 = '+f(nS[0]*1.05)+' → '+f(nS[1])+'</div>':'')
+  +cps(nS,ifull,mk)
+  +'<div class="wk">Fixation: the first 2026 step at or above '+f(tg)+' is '+f(fixed)+'.</div>';
+ var pc=function(x){return Math.round(x*100)+'%'},grp='Grades '+(up?'1–9':'10–20');
+ var ph=function(p,r){return ['<b>Increase</b> = revised basic − old basic = '+f(R)+' − '+f(o)+' = '+f(d),'<b>Share paid</b> = '+pc(p)+' ('+grp+')','<b>Basic</b> = '+f(o)+' + '+pc(p)+' × '+f(d)+' = '+f(r)]};
+ var step=function(x,y){return '+'+f(x-y)+' a month over '+(y===o?'your old basic':'the previous step')};
+ var st=[
+  ['1 Jul to 31 Dec 2026',pc(p1)+' of the increase',s1,step(s1,o),'',ph(p1,s1)],
+  ['1 Jan to 30 Jun 2027',pc(p2)+' of the increase',s2,step(s2,s1),'',ph(p2,s2)],
+  ['From 1 Jul 2027','Full revised basic'+(i7?' with increment':''),full,step(full,s2),'',
+   ['<b>Revised basic</b> after the 2026 step = '+f(R),i7?'<b>1 Jul 2027 increment</b>: '+bump(R)+' → '+f(full):'No 2027 increment selected, so the full basic = '+f(full)]],
+  ['From 1 Jan 2028','Revised allowances added',s4,step(s4,full),'Basic '+f(full)+' + allowances '+f(al),
+   ['<b>House rent</b> = '+f(full)+' × '+hr+'% = '+f(full*hr/100),'<b>Other fixed</b> = '+f(md),'<b>Allowances</b> = '+f(full*hr/100)+' + '+f(md)+' = '+f(al),'<b>Gross</b> = '+f(full)+' + '+f(al)+' = '+f(s4)]]
+ ],h='',mp=$('mp').checked,ex2=[],ne=[],qs=[];
+ $('mpo').hidden=!mp;
+ if(mp){
+  var mf=v('mf'),ed=v('me'),xo=v('mx'),bk=v('mb'),P=function(b,hp,md2,hb){var mn=v('mn'),hA=Math.max(mn,hb*hp/100),gr2=b+hA+md2+ed+xo,rt=b*v('mr')/100,wf=b*v('mw')/100,tx=v('mt'),ot=v('mo'),dd=rt+wf+tx+ot,fe=b*mf/100,bi=b*bk/100;return {b:b,hr:hA,md:md2,oa:ed+xo,rt:rt,wf:wf,xt:tx+ot,g:gr2,d:dd,net:gr2-dd,txt:'Net take-home '+f(gr2-dd)+' (gross '+f(gr2)+', deductions '+f(dd)+')',l:['<b>House rent</b> = larger of '+hp+'% × '+f(hb)+(hb!==b?' (old scale basic)':'')+' = '+f(hb*hp/100)+' and the minimum '+f(mn)+' → '+f(hA),'<b>Medical</b> = '+f(md2),'<b>Education allowance</b> = '+f(ed),'<b>Mobile / other fixed</b> = '+f(xo),'<b>Gross monthly pay</b> = '+f(b)+' + '+f(hA)+' + '+f(md2)+' + '+f(ed)+' + '+f(xo)+' = '+f(gr2),'<b>Retirement</b> = '+v('mr')+'% × '+f(b)+' = '+f(rt),'<b>Welfare</b> = '+v('mw')+'% × '+f(b)+' = '+f(wf),'<b>Income tax</b> '+f(tx)+' + <b>other</b> '+f(ot),'<b>Total deductions</b> = '+f(dd),'<b>Net take-home</b> = '+f(gr2)+' − '+f(dd)+' = '+f(gr2-dd),'<b>Festival bonus</b> = '+mf+'% × '+f(b)+' = '+f(fe)+' per Eid, '+f(2*fe)+' for two Eids','<b>Baishakhi allowance</b> = '+bk+'% × '+f(b)+' = '+f(bi)+' once a year','<b>Yearly bonuses</b> = '+f(2*fe)+' + '+f(bi)+' = '+f(2*fe+bi)]}};
+  var bs=[s1,s2,full,full],hs=[v('mh'),v('mh'),v('mh'),hr>0?hr:v('mh')],ms=[v('mm'),v('mm'),v('mm'),md>0?md:v('mm')];
+  st.forEach(function(x,j){var q=P(bs[j],hs[j],ms[j],j<3?o:bs[j]);ne.push(q.net);qs[j]=q;x[4]=q.txt;x[5]=(j===3?['<b>Basic</b> = '+f(full)+' (unchanged)']:x[5]).concat(q.l)});
+  st[3][1]='Revised allowances (your Jan 2028 rates)';st[3][2]=full;st[3][3]='Basic unchanged, allowances revised';
+  ex2=[['Net take-home, Jul 2026 to Jun 2027','6 × '+f(ne[0])+' + 6 × '+f(ne[1])+' = '+f(6*ne[0]+6*ne[1])],['Net take-home each month from Jan 2028',f(ne[3])]];
+ }
+ var nf=function(x){return Math.round(x).toLocaleString('en-IN')},ln=function(sg,lb,a,cl){return '<div class="ml'+(cl?' '+cl:'')+'"><span>'+sg+' '+lb+'</span><b>'+nf(a)+'</b></div>'};
+ st.forEach(function(x,j){var bb=[s1,s2,full][j],q=qs[j]||(j<3?{b:bb,hr:0,md:0,oa:0,g:bb}:{b:full,hr:full*hr/100,md:0,oa:md,g:s4}),r='';
+  r+=ln('','Basic pay',q.b)+ln('+','House rent',q.hr)+ln('+',mp?'Medical':'Other allowances',mp?q.md:q.oa);
+  if(mp)r+=ln('+','Education, mobile and other fixed',q.oa);
+  r+=ln('=','Gross monthly pay',q.g,'sub');
+  if(mp)r+=ln('−','Retirement ('+v('mr')+'%)',q.rt)+ln('−','Welfare ('+v('mw')+'%)',q.wf)+ln('−','Income tax and other',q.xt)+ln('=','Net monthly take-home',q.net,'net');
+  x[6]='<div class="calc"><div class="ch">Monthly pay in this step (Tk)</div>'+r+'</div>'});
+ st.forEach(function(x,j){h+='<li data-n="'+(j+1)+'"><div class="per">'+x[0]+'</div><div class="share">'+x[1]+'</div><div class="amt">'+f(x[2])+'</div><div class="chg">'+x[3]+'</div>'+(x[4]?'<div class="brk">'+x[4]+'</div>':'')+x[6]+'</li>'});
+ $('steps').innerHTML=h;
+ var m1=Math.min(m,6),m2=Math.max(0,m-6),arr=m1*(s1-o)+m2*(s2-o);
+ var yo=o*12,yn=s1*6+s2*6;
+ $('sum').innerHTML=[
+  ['Arrears','Months 1–6: '+m1+' × ('+f(s1)+' − '+f(o)+') = '+f(m1*(s1-o))+(m2?'<br>Months 7–12: '+m2+' × ('+f(s2)+' − '+f(o)+') = '+f(m2*(s2-o)):'')+'<br>Total = '+f(arr)],
+  ['Basic for Jul 2026 to Jun 2027','6 × '+f(s1)+' + 6 × '+f(s2)+' = '+f(yn)],
+  ['Same year at old basic','12 × '+f(o)+' = '+f(yo)],
+  ['Extra basic that year',f(yn)+' − '+f(yo)+' = '+f(yn-yo)],
+  ['Rise once fully phased in','('+f(full)+' − '+f(o)+') ÷ '+f(o)+' = '+((full-o)/o*100).toFixed(0)+'%']
+ ].concat(ex2).map(function(r){return '<div class="sm"><div class="smh">'+r[0]+'</div>'+wl([r[1]])+'</div>'}).join('');
+}
+g.addEventListener('input',function(){fillK();$('o').value='';calc()});
+['k','o','m','hr','md','i6','i7','mp','mh','mn','mm','mf','mr','mw','mt','mo','me','mx','mb'].forEach(function(i){$(i).addEventListener('input',calc)});
+fillK();calc();
+})();
+</script>
+</body>
+</html>
