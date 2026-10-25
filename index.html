@@ -105,6 +105,7 @@ li,#arrears{scroll-margin-top:calc(env(safe-area-inset-top,0px) + 64px)}
 </div>
 <div><label for="m">Months paid at old basic (with special benefit)</label><input id="m" type="number" min="0" max="12" value="3" inputmode="numeric"></div>
 <div><label for="sb">Special benefit already paid (% of old basic)</label><input id="sb" type="number" min="0" value="10" inputmode="decimal"></div>
+<div class="full chk"><label><input id="oi7" type="checkbox" checked> Pay since 1 July 2026 includes the 2015-scale July increment</label></div>
 <div><label for="hr">House rent from Jan 2028 (% of basic)</label><input id="hr" type="number" min="0" max="100" placeholder="e.g. 45" inputmode="decimal"></div>
 <div class="full"><label for="md">Medical + other fixed from Jan 2028 (Tk)</label><input id="md" type="number" min="0" placeholder="e.g. 6000" inputmode="numeric"></div>
 </div>
@@ -201,10 +202,10 @@ function calc(){
   x[6]='<div class="calc"><div class="ch">Monthly pay in this step (Tk)</div>'+r+'</div>'});
  st.forEach(function(x,j){h+='<li id="s'+(j+1)+'" data-n="'+(j+1)+'"><div class="per">'+x[0]+'</div><div class="share">'+x[1]+'</div><div class="amt">'+f(x[2])+'</div><div class="chg">'+x[3]+'</div>'+(x[4]?'<div class="brk">'+x[4]+'</div>':'')+x[6]+'</li>'});
  $('steps').innerHTML=h;
- var m1=Math.min(m,6),m2=Math.max(0,m-6),arr=m1*(s1-o)+m2*(s2-o),sbp=v('sb'),sbm=o*sbp/100;
+ var m1=Math.min(m,6),m2=Math.max(0,m-6),dr=$('oi7').checked?(function(){var q=0;while(q<oS.length-1&&oS[q]<=o)q++;return oS[q]>o?oS[q]:o})():o,arr=m1*(s1-dr)+m2*(s2-dr),sbp=v('sb'),sbm=dr*sbp/100;
  var yo=o*12,yn=s1*6+s2*6;
  $('sum').innerHTML=[
-  ['Arrears','Months 1–6: '+m1+' × ('+f(s1)+' − '+f(o)+') = '+f(m1*(s1-o))+(m2?'<br>Months 7–12: '+m2+' × ('+f(s2)+' − '+f(o)+') = '+f(m2*(s2-o)):'')+'<br>Arrears before adjustment = '+f(arr)+'<br>Special benefit already drawn: '+m+' × ('+sbp+'% × '+f(o)+' = '+f(sbm)+') = '+f(m*sbm)+'<br><b>Net arrears</b> = '+f(arr)+' − '+f(m*sbm)+' = '+f(arr-m*sbm)],
+  ['Arrears',(dr!==o?'Basic drawn from 1 Jul 2026 = next 2015 step after '+f(o)+' = '+f(dr)+'<br>':'')+'Months 1–6: '+m1+' × ('+f(s1)+' − '+f(dr)+') = '+f(m1*(s1-dr))+(m2?'<br>Months 7–12: '+m2+' × ('+f(s2)+' − '+f(dr)+') = '+f(m2*(s2-dr)):'')+'<br>Arrears before adjustment = '+f(arr)+'<br>Special benefit already drawn: '+m+' × ('+sbp+'% × '+f(dr)+' = '+f(sbm)+') = '+f(m*sbm)+'<br><b>Net arrears</b> = '+f(arr)+' − '+f(m*sbm)+' = '+f(arr-m*sbm)],
   ['Basic for Jul 2026 to Jun 2027','6 × '+f(s1)+' + 6 × '+f(s2)+' = '+f(yn)],
   ['Same year at old basic','12 × '+f(o)+' = '+f(yo)],
   ['Extra basic that year',f(yn)+' − '+f(yo)+' = '+f(yn-yo)],
@@ -212,7 +213,7 @@ function calc(){
  ].concat(ex2).map(function(r){return '<div class="sm"><div class="smh">'+r[0]+'</div>'+wl([r[1]])+'</div>'}).join('');
 }
 g.addEventListener('input',function(){fillK();$('o').value='';$('sb').value=(+g.value<=9?10:15);calc()});
-['k','o','m','hr','md','i6','i7','mp','mh','mn','mm','mf','mr','mw','mt','mo','me','mx','mb','sb'].forEach(function(i){$(i).addEventListener('input',calc)});
+['k','o','m','hr','md','i6','i7','mp','mh','mn','mm','mf','mr','mw','mt','mo','me','mx','mb','sb','oi7'].forEach(function(i){$(i).addEventListener('input',calc)});
 Array.prototype.forEach.call(document.querySelectorAll('.nav a'),function(a){a.addEventListener('click',function(e){e.preventDefault();var t=document.getElementById(a.getAttribute('data-t'));if(t)t.scrollIntoView({behavior:'smooth',block:'start'})})});
 window.addEventListener('scroll',function(){document.body.classList.toggle('sc',window.scrollY>140);var cur=0;for(var i=1;i<=5;i++){var e=document.getElementById(i<5?'s'+i:'arrears');if(e&&e.getBoundingClientRect().top<120)cur=i}Array.prototype.forEach.call(document.querySelectorAll('.nav a'),function(a,k){a.classList.toggle('on',k===cur)})},{passive:true});
 fillK();calc();
